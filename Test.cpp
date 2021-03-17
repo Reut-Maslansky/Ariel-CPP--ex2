@@ -1,6 +1,7 @@
 #include "doctest.h"
 #include "Board.hpp"
 #include <string>
+#include <array>
 using namespace ariel;
 using namespace std;
 
@@ -118,4 +119,40 @@ TEST_CASE("specil chars")
     CHECK(board.read(3, 4, Direction::Vertical, 1) == "_");
     CHECK(board.read(1, 2, Direction::Vertical, 1) == " ");
     CHECK(board.read(6, 3, Direction::Vertical, 1) == "*");
+}
+TEST_CASE("example of beauty message-board")
+{
+
+    ariel::Board b;
+    CHECK_NOTHROW(b.post(0, 0, Direction::Horizontal, "        \\\\|||||//        "));
+    CHECK_NOTHROW(b.post(1, 0, Direction::Horizontal, "        ( O   O )        "));
+    CHECK_NOTHROW(b.post(2, 0, Direction::Horizontal, "|--ooO-----(_)----------|"));
+    CHECK_NOTHROW(b.post(3, 0, Direction::Horizontal, "|                       |"));
+    CHECK_NOTHROW(b.post(4, 0, Direction::Horizontal, "|                       |"));
+    CHECK_NOTHROW(b.post(5, 0, Direction::Horizontal, "|     Message Board     |"));
+    CHECK_NOTHROW(b.post(6, 0, Direction::Horizontal, "|                       |"));
+    CHECK_NOTHROW(b.post(7, 0, Direction::Horizontal, "|                       |"));
+    CHECK_NOTHROW(b.post(8, 0, Direction::Horizontal, "|------------------Ooo--|"));
+    CHECK_NOTHROW(b.post(9, 0, Direction::Horizontal, "        |__|  |__|       "));
+    CHECK_NOTHROW(b.post(10, 0, Direction::Horizontal, "         ||    ||        "));
+    CHECK_NOTHROW(b.post(11, 0, Direction::Horizontal, "        ooO    Ooo       "));
+
+    array<string, 12> s;
+    s.at(0) = "        \\\\|||||//        ";
+    s.at(1) = "        ( O   O )        ";
+    s.at(2) = "|--ooO-----(_)----------|";
+    s.at(3) = "|                       |";
+    s.at(4) = "|                       |";
+    s.at(5) = "|     Message Board     |";
+    s.at(6) = "|                       |";
+    s.at(7) = "|                       |";
+    s.at(8) = "|------------------Ooo--|";
+    s.at(9) = "        |__|  |__|       ";
+    s.at(10) = "         ||    ||        ";
+    s.at(11) = "        ooO    Ooo       ";
+
+    for (unsigned int i = 0; i < 12; i++)
+    {
+        CHECK(b.read(i, 0, Direction::Horizontal, 25) == string(s.at(i)));
+    }
 }
