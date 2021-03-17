@@ -41,8 +41,8 @@ int main() {
 	board.show();
 	cout<<endl;
     board.post(5, 2, Direction::Horizontal, "Yakir");
-    // board.post(4, 6, Direction::Horizontal, "temp");
-    // board.post(1, 6, Direction::Vertical, "ariela");
+    board.post(4, 6, Direction::Horizontal, "temp");
+    board.post(1, 6, Direction::Vertical, "ariela");
 	board.show();
 }
 

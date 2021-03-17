@@ -15,29 +15,34 @@ namespace ariel
     // Board::~Board()
     // {
     // }
+
     void Board::post(unsigned int row, unsigned int column, Direction direction, string message)
     {
-        // if(rows==0&&cols==0&&message.length()>0){
-        //     b.push_back(vector<char> (1,'_'));
-        // }
-        
-        //resize cols
-        if (column + message.length() > cols ) //&& direction == Direction::Horizontal
+        //first initial board
+        if (rows == 0 && cols == 0 && message.length() > 0)
+        {
+            b.push_back(vector<char>(1, '_'));
+            cols++;
+            rows++;
+        }
+
+        //if we need- resize cols
+        if (column + message.length() > (cols - 1)) //&& direction == Direction::Horizontal
         {
             for (unsigned int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < (column + message.length() - cols + 1); j++)
+                for (int j = 0; j < (column + message.length() - cols); j++)
                 {
                     b.at(i).push_back('_');
                 }
             }
-            cols = column + message.length();
+            cols = b.at(0).size();
         }
 
-        //resize rows
-        if (row + message.length() > rows ) //&& direction == Direction::Vertical
+        //if we need- resize rows
+        if (row + message.length() > rows - 1) //&& direction == Direction::Vertical
         {
-            for (int i = 0; i < (row + message.length() - rows + 1); i++)
+            for (int i = 0; i < (row + message.length() - rows); i++)
             {
                 vector<char> n;
                 for (int j = 0; j < cols; j++)
@@ -46,7 +51,7 @@ namespace ariel
                 }
                 b.push_back(n);
             }
-            rows = row + message.length();
+            rows = b.at(0).size();
         }
 
         for (unsigned int i = 0; i < message.length(); i++)
@@ -109,12 +114,11 @@ namespace ariel
         return msg;
     }
 
-    
     void Board::show()
     {
         for (unsigned long i = 0; i < b.size(); i++)
         {
-            cout << i<<":\t";
+            cout << i << ":\t";
             for (unsigned long j = 0; j < b.at(i).size(); j++)
             {
                 cout << b.at(i).at(j);
