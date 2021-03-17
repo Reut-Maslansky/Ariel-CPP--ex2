@@ -1,7 +1,8 @@
 #include "Board.hpp"
-// #include <vector>
+#include <vector>
 #include <string>
-// #include <iostream>
+#include <iostream>
+
 using namespace std;
 
 namespace ariel
@@ -11,13 +12,17 @@ namespace ariel
         rows = 0;
         cols = 0;
     }
-    Board::~Board()
-    {
-    }
+    // Board::~Board()
+    // {
+    // }
     void Board::post(unsigned int row, unsigned int column, Direction direction, string message)
     {
+        // if(rows==0&&cols==0&&message.length()>0){
+        //     b.push_back(vector<char> (1,'_'));
+        // }
+        
         //resize cols
-        if (column + message.length() > cols)
+        if (column + message.length() > cols ) //&& direction == Direction::Horizontal
         {
             for (unsigned int i = 0; i < rows; i++)
             {
@@ -30,7 +35,7 @@ namespace ariel
         }
 
         //resize rows
-        if (row + message.length() > rows)
+        if (row + message.length() > rows ) //&& direction == Direction::Vertical
         {
             for (int i = 0; i < (row + message.length() - rows + 1); i++)
             {
@@ -43,6 +48,7 @@ namespace ariel
             }
             rows = row + message.length();
         }
+
         for (unsigned int i = 0; i < message.length(); i++)
         {
             if (direction == Direction::Horizontal)
@@ -51,26 +57,69 @@ namespace ariel
                 b.at(row + i).at(column) = message.at(i);
         }
     }
-    std::string Board::read(unsigned int row, unsigned int column, Direction direction, unsigned int length)
+    string Board::read(unsigned int row, unsigned int column, Direction direction, unsigned int length)
     {
         if (length == 0)
-            // throw string("message length can't be zero");
             return "";
 
-        if (row > rows || column > cols)
-            throw string("There is no such place on the board");
-
         string msg;
-        for (unsigned int i = 0; i < length; i++)
+        unsigned int current_len = length;
+        unsigned int space_len = 0;
+        if (direction == Direction::Horizontal)
+        {
+            if (row > rows)
+            {
+                for (int i = 0; i < length; i++)
+                    msg += "_";
+                return msg;
+            }
+
+            if (row + length > rows)
+            {
+                space_len = row + length - rows;
+                current_len = length - space_len;
+            }
+        }
+        else
+        {
+            if (column > cols)
+            {
+                for (int i = 0; i < length; i++)
+                    msg += "_";
+                return msg;
+            }
+            if (column + length > cols)
+            {
+                space_len = column + length - cols;
+                current_len = length - space_len;
+            }
+        }
+
+        for (unsigned int i = 0; i < current_len; i++)
         {
             if (direction == Direction::Horizontal)
                 msg += b.at(row).at(column + i);
             else
                 msg += b.at(row + i).at(column);
         }
+
+        for (int i = 0; i < space_len; i++)
+            msg += "_";
+
         return msg;
     }
+
+    
     void Board::show()
     {
+        for (unsigned long i = 0; i < b.size(); i++)
+        {
+            cout << i<<":\t";
+            for (unsigned long j = 0; j < b.at(i).size(); j++)
+            {
+                cout << b.at(i).at(j);
+            }
+            cout << endl;
+        }
     }
 }
