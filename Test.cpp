@@ -120,6 +120,20 @@ TEST_CASE("specil chars")
     CHECK(board.read(1, 2, Direction::Vertical, 1) == " ");
     CHECK(board.read(6, 3, Direction::Vertical, 1) == "*");
 }
+
+TEST_CASE("random")
+{
+    ariel::Board bo;
+    unsigned int random_row = rand() % 100;
+    unsigned int random_col = rand() % 100;
+    unsigned int random_len = rand() % 10;
+    int random_dirc = rand() % 2;
+    if (random_dirc == 0)
+        CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Horizontal, "rand"));
+    else
+        CHECK_NOTHROW(bo.read(random_row, random_col, Direction::Vertical, random_len));
+}
+
 TEST_CASE("example of beauty message-board")
 {
 
