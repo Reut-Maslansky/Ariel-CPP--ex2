@@ -15,6 +15,15 @@ TEST_CASE("test read before post")
     CHECK(board.read(0, 0, Direction::Vertical, 2) == string("__"));
     CHECK(board.read(34, 100, Direction::Vertical, 5) == string("_____"));
     CHECK(board.read(23, 54, Direction::Horizontal, 4) == string("____"));
+    unsigned int random_row = rand() % 100;
+    unsigned int random_col = rand() % 100;
+    unsigned int random_len = rand() % 10;
+    string ans;
+    for(int i=0; i<random_len; i++){
+        ans+="_";
+    }
+    CHECK(board.read(random_row, random_col, Direction::Vertical, random_len) == string(ans));
+    CHECK(board.read(random_row, random_col, Direction::Horizontal, random_len) == string(ans));
 }
 
 TEST_CASE("test post")
@@ -127,11 +136,15 @@ TEST_CASE("random")
     unsigned int random_row = rand() % 100;
     unsigned int random_col = rand() % 100;
     unsigned int random_len = rand() % 10;
-    int random_dirc = rand() % 2;
-    if (random_dirc == 0)
+    
         CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Horizontal, "rand"));
-    else
-        CHECK_NOTHROW(bo.read(random_row, random_col, Direction::Vertical, random_len));
+        string ans="rand";
+        for(int i=0; i<random_len-4; i++){
+            ans+="_";
+        }
+        CHECK(bo.read(random_row, random_col, Direction::Horizontal, random_len)==string(ans));
+        CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Vertical, "rand"));
+        CHECK(bo.read(random_row, random_col, Direction::Vertical, random_len)==string(ans));
 }
 
 TEST_CASE("example of beauty message-board")
