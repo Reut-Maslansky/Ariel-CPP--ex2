@@ -19,8 +19,9 @@ TEST_CASE("test read before post")
     unsigned int random_col = rand() % 100;
     unsigned int random_len = rand() % 10;
     string ans;
-    for(int i=0; i<random_len; i++){
-        ans+="_";
+    for (int i = 0; i < random_len; i++)
+    {
+        ans += "_";
     }
     CHECK(board.read(random_row, random_col, Direction::Vertical, random_len) == string(ans));
     CHECK(board.read(random_row, random_col, Direction::Horizontal, random_len) == string(ans));
@@ -38,7 +39,6 @@ TEST_CASE("test post")
 }
 TEST_CASE("test read- 1 post- no change")
 {
-
     CHECK(board.read(0, 0, Direction::Vertical, 3) == string("Reu"));
     CHECK(board.read(0, 0, Direction::Vertical, 4) == string("Reut"));
     CHECK(board.read(0, 0, Direction::Vertical, 5) == string("Reut_"));
@@ -136,15 +136,16 @@ TEST_CASE("random")
     unsigned int random_row = rand() % 100;
     unsigned int random_col = rand() % 100;
     unsigned int random_len = rand() % 10;
-    
-        CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Horizontal, "rand"));
-        string ans="rand";
-        for(int i=0; i<random_len-4; i++){
-            ans+="_";
-        }
-        CHECK(bo.read(random_row, random_col, Direction::Horizontal, random_len)==string(ans));
-        CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Vertical, "rand"));
-        CHECK(bo.read(random_row, random_col, Direction::Vertical, random_len)==string(ans));
+
+    CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Horizontal, "rand"));
+    string ans = "rand";
+    for (int i = 0; i < random_len - 4; i++)
+    {
+        ans += "_";
+    }
+    CHECK(bo.read(random_row, random_col, Direction::Horizontal, random_len) == string(ans));
+    CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Vertical, "rand"));
+    CHECK(bo.read(random_row, random_col, Direction::Vertical, random_len) == string(ans));
 }
 
 TEST_CASE("example of beauty message-board")
@@ -164,6 +165,7 @@ TEST_CASE("example of beauty message-board")
     CHECK_NOTHROW(b.post(10, 0, Direction::Horizontal, "         ||    ||        "));
     CHECK_NOTHROW(b.post(11, 0, Direction::Horizontal, "        ooO    Ooo       "));
 
+    b.show();
     array<string, 12> s;
     s.at(0) = "        \\\\|||||//        ";
     s.at(1) = "        ( O   O )        ";

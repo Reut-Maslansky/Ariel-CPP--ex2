@@ -11,96 +11,108 @@ namespace ariel
     {
         rows = 0;
         cols = 0;
+        b.push_back(vector<char>(1, '_'));
     }
-    // Board::~Board()
-    // {
-    // }
 
     void Board::post(unsigned int row, unsigned int column, Direction direction, string message)
     {
-        //first initial board
-        if (rows == 0 && cols == 0 && message.length() > 0)
-        {
-            b.push_back(vector<char>(1, '_'));
-            cols++;
-            rows++;
-        }
+        if (message.length() == 0)
+            return;
 
-        //if we need- resize cols
-        if (column + message.length() > (cols - 1)) //&& direction == Direction::Horizontal
+        if (direction == Direction::Vertical)
         {
-            for (unsigned int i = 0; i < rows; i++)
+            if (row + message.length() > rows)
             {
-                for (int j = 0; j < (column + message.length() - cols); j++)
+                for (int i = 0; i < (row + message.length() - rows - 1); i++)
                 {
-                    b.at(i).push_back('_');
+                    vector<char> n;
+                    for (int j = 0; j < b.at(0).size(); j++)
+                    {
+                        n.push_back('_');
+                    }
+                    b.push_back(n);
                 }
+                rows = b.size() - 1;
             }
-            cols = b.at(0).size();
-        }
-
-        //if we need- resize rows
-        if (row + message.length() > rows - 1) //&& direction == Direction::Vertical
-        {
-            for (int i = 0; i < (row + message.length() - rows); i++)
+            if (column > cols)
             {
-                vector<char> n;
-                for (int j = 0; j < cols; j++)
+                for (unsigned int i = 0; i < rows; i++)
                 {
-                    n.push_back('_');
+                    for (int j = 0; j < (column - cols); j++)
+                    {
+                        b.at(i).push_back('_');
+                    }
                 }
-                b.push_back(n);
+                cols = b.at(0).size() - 1;
             }
-            rows = b.at(0).size();
         }
+        else
+        {
+            if (row > rows)
+            {
+                for (int i = 0; i < (row - rows); i++)
+                {
+                    vector<char> n;
+                    for (int j = 0; j < b.at(0).size(); j++)
+                    {
+                        n.push_back('_');
+                    }
+                    b.push_back(n);
+                }
+                rows = b.size() - 1;
+            }
 
+            if (column + message.length() > cols)
+            {
+                for (unsigned int i = 0; i < b.size(); i++)
+                {
+                    for (int j = 0; j < (column + message.length() - cols - 1); j++)
+                    {
+                        b.at(i).push_back('_');
+                    }
+                }
+                cols = b.at(0).size() - 1;
+            }
+        }
         for (unsigned int i = 0; i < message.length(); i++)
         {
-            if (direction == Direction::Horizontal)
-                b.at(row).at(column + i) = message.at(i);
-            else
+            if (direction == Direction::Vertical)
                 b.at(row + i).at(column) = message.at(i);
+            else
+                b.at(row).at(column + i) = message.at(i);
         }
     }
+
     string Board::read(unsigned int row, unsigned int column, Direction direction, unsigned int length)
     {
         if (length == 0)
             return "";
 
-        string msg;
-        unsigned int current_len = length;
+        if ((row > rows && direction == Direction::Vertical) || (column > cols && direction == Direction::Horizontal))
+        {
+            string ans;
+            for (int i = 0; i < length; i++)
+            {
+                ans += "_";
+            }
+            return ans;
+        }
+
         unsigned int space_len = 0;
-        if (direction == Direction::Horizontal)
-        {
-            if (row > rows)
-            {
-                for (int i = 0; i < length; i++)
-                    msg += "_";
-                return msg;
-            }
+        unsigned int char_len = length;
 
-            if (row + length > rows)
-            {
-                space_len = row + length - rows;
-                current_len = length - space_len;
-            }
-        }
-        else
+        if (row + length > rows && direction == Direction::Vertical)
         {
-            if (column > cols)
-            {
-                for (int i = 0; i < length; i++)
-                    msg += "_";
-                return msg;
-            }
-            if (column + length > cols)
-            {
-                space_len = column + length - cols;
-                current_len = length - space_len;
-            }
+            space_len = row + length - rows - 1;
+            char_len = length-space_len;
         }
-
-        for (unsigned int i = 0; i < current_len; i++)
+        else if (column + length > cols && direction == Direction::Horizontal)
+        {
+            space_len = column + length - cols - 1;
+            char_len = length-space_len;
+        }
+        string msg;
+        for (unsigned int i = 0; i < char_len; i++)
         {
             if (direction == Direction::Horizontal)
                 msg += b.at(row).at(column + i);
