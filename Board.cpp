@@ -17,7 +17,9 @@ namespace ariel
     void Board::post(unsigned int row, unsigned int column, Direction direction, string message)
     {
         if (message.length() == 0)
+        {
             return;
+        }
 
         if (direction == Direction::Vertical)
         {
@@ -25,12 +27,7 @@ namespace ariel
             {
                 for (int i = 0; i < (row + message.length() - rows - 1); i++)
                 {
-                    vector<char> n;
-                    for (int j = 0; j < b.at(0).size(); j++)
-                    {
-                        n.push_back('_');
-                    }
-                    b.push_back(n);
+                    b.push_back(vector<char>(b.at(0).size(), '_'));
                 }
                 rows = b.size() - 1;
             }
@@ -52,12 +49,7 @@ namespace ariel
             {
                 for (int i = 0; i < (row - rows); i++)
                 {
-                    vector<char> n;
-                    for (int j = 0; j < b.at(0).size(); j++)
-                    {
-                        n.push_back('_');
-                    }
-                    b.push_back(n);
+                    b.push_back(vector<char>(b.at(0).size(), '_'));
                 }
                 rows = b.size() - 1;
             }
@@ -74,19 +66,26 @@ namespace ariel
                 cols = b.at(0).size() - 1;
             }
         }
+        
         for (unsigned int i = 0; i < message.length(); i++)
         {
             if (direction == Direction::Vertical)
+            {
                 b.at(row + i).at(column) = message.at(i);
+            }
             else
+            {
                 b.at(row).at(column + i) = message.at(i);
+            }
         }
     }
 
     string Board::read(unsigned int row, unsigned int column, Direction direction, unsigned int length)
     {
         if (length == 0)
+        {
             return "";
+        }
 
         if ((row > rows && direction == Direction::Vertical) || (column > cols && direction == Direction::Horizontal))
         {
@@ -104,24 +103,30 @@ namespace ariel
         if (row + length > rows && direction == Direction::Vertical)
         {
             space_len = row + length - rows - 1;
-            char_len = length-space_len;
+            char_len = length - space_len;
         }
         else if (column + length > cols && direction == Direction::Horizontal)
         {
             space_len = column + length - cols - 1;
-            char_len = length-space_len;
+            char_len = length - space_len;
         }
         string msg;
         for (unsigned int i = 0; i < char_len; i++)
         {
             if (direction == Direction::Horizontal)
+            {
                 msg += b.at(row).at(column + i);
+            }
             else
+            {
                 msg += b.at(row + i).at(column);
+            }
         }
 
         for (int i = 0; i < space_len; i++)
+        {
             msg += "_";
+        }
 
         return msg;
     }
