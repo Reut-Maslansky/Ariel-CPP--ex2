@@ -33,7 +33,7 @@ namespace ariel
             }
             if (column > cols)
             {
-                for (unsigned int i = 0; i < rows; i++)
+                for (unsigned int i = 0; i <b.size(); i++)
                 {
                     for (int j = 0; j < (column - cols); j++)
                     {
