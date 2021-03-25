@@ -2,6 +2,7 @@
 #include "Board.hpp"
 #include <string>
 #include <array>
+
 using namespace ariel;
 using namespace std;
 
@@ -135,12 +136,30 @@ TEST_CASE("random")
     ariel::Board bo;
     unsigned int random_row = rand() % 100;
     unsigned int random_col = rand() % 100;
-    unsigned int random_len = rand() % 10;
+    unsigned int random_len = rand() % 100;
 
     CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Horizontal, "rand"));
-    string ans = "rand";
+    string ans="";
+    switch (random_len)
+    {
+    case 1:
+        ans="r";
+        break;
+    case 2:
+        ans="ra";
+        break;
+     case 3:
+        ans="ran";
+        break;
+        case 4:
+        ans="rand";
+        break;
+    default:
+        break;
+    }
     if (random_len > 4)
     {
+        ans = "rand";
         for (unsigned int i = 0; i < random_len - 4; i++)
         {
             ans += "_";
