@@ -19,7 +19,7 @@ TEST_CASE("test read before post")
     unsigned int random_col = rand() % 100;
     unsigned int random_len = rand() % 10;
     string ans;
-    for (int i = 0; i < random_len; i++)
+    for (unsigned int i = 0; i < random_len; i++)
     {
         ans += "_";
     }
@@ -139,9 +139,12 @@ TEST_CASE("random")
 
     CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Horizontal, "rand"));
     string ans = "rand";
-    for (int i = 0; i < random_len - 4; i++)
+    if (random_len > 4)
     {
-        ans += "_";
+        for (unsigned int i = 0; i < random_len - 4; i++)
+        {
+            ans += "_";
+        }
     }
     CHECK(bo.read(random_row, random_col, Direction::Horizontal, random_len) == string(ans));
     CHECK_NOTHROW(bo.post(random_row, random_col, Direction::Vertical, "rand"));
